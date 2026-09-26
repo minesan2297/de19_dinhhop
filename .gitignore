@@ -1,0 +1,40 @@
+# ============================================================
+#  .gitignore – Đề 19: Website Tin tức
+# ============================================================
+
+# Biến môi trường – KHÔNG đưa lên git
+.env
+.env.local
+.env.production
+
+# Dữ liệu volume Docker
+data/
+mysql_data/
+prometheus_data/
+grafana_data/
+loki_data/
+
+# Log files
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# WordPress uploads (optional – có thể commit theme/plugin)
+wordpress/wp-content/uploads/
+wordpress/wp-content/upgrade/
+wordpress/wp-content/cache/
+
+# Node modules (nếu dùng custom theme)
+node_modules/
+npm-debug.log*
+yarn-error.log*

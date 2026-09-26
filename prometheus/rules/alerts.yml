@@ -1,0 +1,43 @@
+groups:
+  - name: system_alerts
+    rules:
+
+      # CPU sử dụng > 80% trong 5 phút
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU cao trên {{ $labels.instance }}"
+          description: "CPU đang ở {{ $value | printf \"%.1f\" }}%"
+
+      # RAM sử dụng > 85%
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "RAM thấp trên {{ $labels.instance }}"
+          description: "RAM đang dùng {{ $value | printf \"%.1f\" }}%"
+
+      # Disk sử dụng > 80%
+      - alert: HighDiskUsage
+        expr: (1 - node_filesystem_avail_bytes{fstype!="tmpfs"} / node_filesystem_size_bytes{fstype!="tmpfs"}) * 100 > 80
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Disk sắp đầy trên {{ $labels.instance }}"
+          description: "Disk {{ $labels.mountpoint }} đang ở {{ $value | printf \"%.1f\" }}%"
+
+      # Container bị dừng đột ngột
+      - alert: ContainerDown
+        expr: absent(container_last_seen{name=~"de19_.*"})
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container de19 bị dừng"
+          description: "Một container trong stack de19 không còn phản hồi"
