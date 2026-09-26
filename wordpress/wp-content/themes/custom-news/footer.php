@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * footer.php – Custom News Theme
  */
@@ -18,7 +18,7 @@
                     <h4>📰 <?php bloginfo('name'); ?></h4>
                     <p style="font-size:.875rem; line-height:1.7;"><?php bloginfo('description'); ?></p>
                     <p style="font-size:.8rem; margin-top:12px; color:#888;">
-                        🏫 Đề 19 – TKQT HTPM K23<br>
+                        🏫 Đề 19 – CNTT K23C<br>
                         👨‍💻 Sinh viên: Đinh Bách Hợp<br>
                         🆔 DTC245201006
                     </p>
@@ -75,7 +75,7 @@
             <p>
                 &copy; <?= date('Y'); ?> <strong><?php bloginfo('name'); ?></strong>.
                 Đề 19 – Website Tin tức / Cổng thông tin &mdash;
-                TKQT HTPM K23 &middot; Đinh Bách Hợp &middot; DTC245201006
+                CNTT K23C &middot; Đinh Bách Hợp &middot; DTC245201006
             </p>
         </div>
 

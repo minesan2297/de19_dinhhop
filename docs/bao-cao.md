@@ -1,5 +1,5 @@
-# BÁO CÁO ĐỒ ÁN CUỐI KỲ
-## Thiết kế & Quản trị Hệ thống Phần mềm (TKQT HTPM K23)
+﻿# BÁO CÁO ĐỒ ÁN CUỐI KỲ
+## Kiến trúc & Triển khai Hệ thống Phần mềm (CNTT K23C)
 
 ---
 
@@ -324,4 +324,4 @@ Dashboard `DE19 – News Website Monitor` gồm các panel:
 ---
 
 *Báo cáo được thực hiện bởi: **Đinh Bách Hợp – DTC245201006***  
-*Đề 19 – TKQT HTPM K23 – Năm học 2025-2026*
+*Đề 19 – CNTT K23C – Năm học 2025-2026*

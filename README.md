@@ -1,7 +1,7 @@
-# 📰 Đề 19 – Website Tin tức / Cổng thông tin
+﻿# 📰 Đề 19 – Website Tin tức / Cổng thông tin
 
 **Sinh viên:** Đinh Bách Hợp – DTC245201006  
-**Môn:** Thiết kế & Quản trị Hệ thống Phần mềm (TKQT HTPM K23)
+**Môn:** Thiết kế & Quản trị Hệ thống Phần mềm (CNTT K23C)
 
 ---
 
