@@ -1,0 +1,85 @@
+/**
+ * ==============================================================================
+ *  DESIGN TOKENS SYSTEM – ĐỀ 19 (IMPECCABLE & FRONTEND-DESIGN)
+ *  Dự án môn: Quản trị và Triển khai Hệ thống Phần mềm – CNTT K23C
+ *  Sinh viên: Đinh Bách Hợp – DTC245201006
+ *  Nguyên tắc:
+ *   - Triệt để loại bỏ gradient tím/xanh rập khuôn & card số liệu sáo rỗng.
+ *   - Thiết lập bảng màu Mực in (Deep Ink) & Giấy báo cao cấp (Warm Paper).
+ *   - Bố cục lưới Broadsheet chuẩn báo chí: Tỷ lệ quang học, đường kẻ hairline.
+ *   - Áp dụng thống nhất cho cả 3 bề mặt: Tin tức, Quản trị DB, Đo kiểm Hạ tầng.
+ * ==============================================================================
+ */
+
+:root {
+    /* ── 1. Color Palette: Pure Editorial Monochromes & Ink ── */
+    --dt-ink-pitch:       #09090b; /* Mực in đen tuyền */
+    --dt-ink-primary:     #18181b; /* Màu chữ tiêu đề chính */
+    --dt-ink-secondary:   #3f3f46; /* Thân bài, diễn giải */
+    --dt-ink-muted:       #71717a; /* Ngày tháng, chú thích phụ */
+    --dt-ink-faint:       #a1a1aa; /* Đường kẻ, watermark */
+
+    /* ── 2. Paper & Canvas Backgrounds (Không dùng màu nền bệt rẻ tiền) ── */
+    --dt-paper-canvas:    #fbfbfa; /* Nền giấy báo hơi ngả ấm */
+    --dt-paper-white:     #ffffff; /* Nền trang bìa / bài viết */
+    --dt-paper-recessed:  #f4f4f5; /* Khối mã nguồn, trích dẫn */
+    --dt-paper-subtle:    #f8f8f7; /* Header / Footer canvas */
+
+    /* ── 3. Hairline Borders & Rules (Thay thế hoàn toàn đổ bóng nặng nề) ── */
+    --dt-rule-dark:       #18181b; /* Đường kẻ tiêu đề đậm */
+    --dt-rule-main:       #e4e4e7; /* Đường phân chia cột báo */
+    --dt-rule-subtle:     #ebebe8; /* Đường kẻ bảng phụ */
+    --dt-rule-hairline:   rgba(24, 24, 27, 0.08);
+
+    /* ── 4. Singular Authoritative Accent: Editorial Crimson (Đỏ son báo chí) ── */
+    --dt-accent-red:      #991b1b; /* Điểm nhấn tin nóng / Kicker */
+    --dt-accent-red-hover:#7f1d1d;
+    --dt-accent-red-soft: #fef2f2;
+    --dt-accent-red-border:#fecaca;
+
+    /* ── 5. Tri-Service Brand Anchors (Dành riêng cho 3 nền tảng) ── */
+    --dt-portal-wp:       #18181b; /* WordPress: Editorial Noir */
+    --dt-portal-db:       #0284c7; /* phpMyAdmin: Precision Cyan/Steel */
+    --dt-portal-grafana:  #ea580c; /* Grafana: Telemetry Amber/Orange */
+    --dt-system-ok:       #15803d; /* Trạng thái dịch vụ hoạt động */
+    --dt-system-ok-bg:    #f0fdf4;
+
+    /* ── 6. Typography Stacks (Optical Rhythm) ── */
+    --dt-font-serif:      'Merriweather', 'Times New Roman', Times, Georgia, serif;
+    --dt-font-sans:       'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --dt-font-mono:       'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+    /* ── 7. Modular Type Scale ── */
+    --dt-text-2xs:        0.6875rem; /* 11px - Micro metadata */
+    --dt-text-xs:         0.75rem;   /* 12px - Badges, kicker */
+    --dt-text-sm:         0.84375rem;/* 13.5px - Bylines, subhead */
+    --dt-text-base:       0.96875rem;/* 15.5px - Body text */
+    --dt-text-md:         1.0625rem; /* 17px - Intro lead */
+    --dt-text-lg:         1.25rem;   /* 20px - Section title */
+    --dt-text-xl:         1.5rem;    /* 24px - Story headline */
+    --dt-text-2xl:        1.875rem;  /* 30px - Sub-lead title */
+    --dt-text-3xl:        2.375rem;  /* 38px - Main Hero Title */
+    --dt-text-hero:       2.875rem;  /* 46px - Broadsheet Lead */
+
+    /* ── 8. Spacing Grid (4px / 8px Base) ── */
+    --dt-sp-1: 4px;
+    --dt-sp-2: 8px;
+    --dt-sp-3: 12px;
+    --dt-sp-4: 16px;
+    --dt-sp-5: 20px;
+    --dt-sp-6: 24px;
+    --dt-sp-8: 32px;
+    --dt-sp-10: 40px;
+    --dt-sp-12: 48px;
+    --dt-sp-16: 64px;
+
+    /* ── 9. Geometry & Elevation ── */
+    --dt-rad-none: 0px;
+    --dt-rad-sm:   3px;
+    --dt-rad-md:   6px;
+    --dt-rad-full: 9999px;
+
+    /* Shadow: Cực kỳ tinh giản, không dùng shadow màu mè */
+    --dt-shadow-flat:  0 1px 3px rgba(0,0,0,0.04);
+    --dt-shadow-focus: 0 0 0 2px var(--dt-ink-pitch);
+}
