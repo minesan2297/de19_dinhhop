@@ -1,0 +1,112 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: 'DE19SecurityAlerts'
+    folder: 'Security Alerts'
+    interval: 10s
+    rules:
+      - uid: 'de19_brute_force_login'
+        title: 'DE19 - Brute force login'
+        condition: 'C'
+        for: 0s
+        data:
+          - refId: 'A'
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: 'loki'
+            model:
+              expr: 'sum(count_over_time({job="nginx"} |~ "(?i)(wp-login|admin|login)" [1m]))'
+              instant: true
+              maxDataPoints: 43200
+          - refId: 'B'
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: '__expr__'
+            model:
+              type: 'reduce'
+              expression: 'A'
+              reducer: 'last'
+          - refId: 'C'
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: '__expr__'
+            model:
+              type: 'threshold'
+              expression: 'B'
+              conditions:
+                - evaluator:
+                    params: [5]
+                    type: 'gt'
+        annotations:
+          summary: 'Brute force login attack detected'
+        labels:
+          severity: 'critical'
+
+  - orgId: 1
+    name: 'de19-system-alerts'
+    folder: 'Alerts'
+    interval: 1m
+    rules:
+      - uid: 'alert_cpu_high'
+        title: 'High CPU Usage (>80%)'
+        condition: 'B'
+        for: 5m
+        data:
+          - refId: 'A'
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: 'prometheus'
+            model:
+              expr: '100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)'
+              instant: true
+          - refId: 'B'
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: '-100'
+            model:
+              type: 'threshold'
+              expression: 'A'
+              conditions:
+                - evaluator:
+                    params: [80]
+                    type: 'gt'
+        annotations:
+          summary: 'Canh bao: CPU may chu vuot nguong 80% trong 5 phut'
+        labels:
+          severity: 'warning'
+
+      - uid: 'alert_mem_high'
+        title: 'High Memory Usage (>85%)'
+        condition: 'B'
+        for: 5m
+        data:
+          - refId: 'A'
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: 'prometheus'
+            model:
+              expr: '(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100'
+              instant: true
+          - refId: 'B'
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: '-100'
+            model:
+              type: 'threshold'
+              expression: 'A'
+              conditions:
+                - evaluator:
+                    params: [85]
+                    type: 'gt'
+        annotations:
+          summary: 'Canh bao: Bo nho RAM su dung vuot qua 85%'
+        labels:
+          severity: 'critical'
