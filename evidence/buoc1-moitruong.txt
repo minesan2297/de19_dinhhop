@@ -1,0 +1,48 @@
+================================================================================
+BÁO CÁO MÔN HỌC: QUẢN TRỊ VÀ TRIỂN KHAI HỆ THỐNG PHẦN MỀM - ĐỀ 19
+MINH CHỨNG BƯỚC 1: KHẢO SÁT MÔI TRƯỜNG MÁY CHỦ, DOCKER VÀ GIT REPOSITORY
+Sinh viên: Đinh Bách Hợp - MSSV: DTC245201006 - Lớp: CNTT K23C
+Thời gian ghi nhận: Fri Oct 23 04:08:52 PM CST 2026
+================================================================================
+
+[1] Thông tin hệ điều hành Linux Host:
+$ uname -a
+Linux ubuntu-VMware-Virtual-Platform 7.0.0-38-generic #38-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  4 09:10:14 UTC 2026 x86_64 GNU/Linux
+
+[2] Thông tin bản phân phối Ubuntu:
+$ lsb_release -a
+Distributor ID:	Ubuntu
+Description:	Ubuntu 26.04 LTS
+Release:	26.04
+Codename:	resolute
+
+[3] Phiên bản Docker Engine & Docker Compose Plugin:
+$ docker --version && docker compose version
+Docker version 29.9.2, build a82e528
+Docker Compose version v5.6.1
+
+[4] Tài nguyên phần cứng máy chủ (CPU, RAM, Disk):
+$ lscpu | grep 'Model name\|CPU(s):'
+CPU(s):                                  4
+Model name:                              11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz
+NUMA node0 CPU(s):                       0-3
+
+$ free -h
+total        used        free      shared  buff/cache   available
+Mem:           5.2Gi       1.8Gi       1.3Gi        33Mi       2.4Gi       3.4Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+$ df -h /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2        40G   16G   22G  42% /
+
+[5] Trạng thái Git Repository:
+$ git remote -v && git branch -a && git log -n 3 --oneline
+origin	https://minesan2297:***TOKEN***@github.com/minesan2297/dtc245201006.git (fetch)
+origin	https://minesan2297:***TOKEN***@github.com/minesan2297/dtc245201006.git (push)
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+14240bc feat: final de 19 - update compose project name in env example
+149e494 feat: final de 19
+7b28610 docs: add 1-line quick install command to top of README

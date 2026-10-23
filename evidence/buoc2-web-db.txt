@@ -1,0 +1,44 @@
+================================================================================
+BÁO CÁO MÔN HỌC: QUẢN TRỊ VÀ TRIỂN KHAI HỆ THỐNG PHẦN MỀM - ĐỀ 19
+MINH CHỨNG BƯỚC 2: TRIỂN KHAI ỨNG DỤNG WEB (WORDPRESS) VÀ CSDL MYSQL + PHPMYADMIN
+Sinh viên: Đinh Bách Hợp - MSSV: DTC245201006 - Lớp: CNTT K23C
+Thời gian ghi nhận: Fri Oct 23 04:08:53 PM CST 2026
+================================================================================
+
+[1] Trạng thái các container Web & Database:
+$ docker ps --filter "name=de19_wordpress" --filter "name=de19_mysql" --filter "name=de19_phpmyadmin" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+NAMES             STATUS                    PORTS
+de19_wordpress    Up 1 second               9000/tcp
+de19_phpmyadmin   Up 1 second               80/tcp
+de19_mysql        Up 12 seconds (healthy)   3306/tcp, 33060/tcp
+
+[2] Kiểm tra kết nối CSDL và đếm số lượng bài viết (wp_posts):
+$ docker exec de19_mysql mysql -uroot -pRootPass@2026 wordpress_db -e "SELECT count(*) as total_published_posts FROM wp_posts WHERE post_status='publish' AND post_type='post';"
+total_published_posts
+7
+
+[3] Danh sách các chuyên mục tin tức (wp_terms):
+$ docker exec de19_mysql mysql -uroot -pRootPass@2026 wordpress_db -e "SELECT t.name, t.slug, tt.count FROM wp_terms t JOIN wp_term_taxonomy tt ON t.term_id=tt.term_id WHERE tt.taxonomy='category';"
+name	slug	count
+Uncategorized	uncategorized	1
+Th?i s?	thoi-su	1
+C�ng ngh?	cong-nghe	2
+Kinh t?	kinh-te	1
+Gi�o d?c	giao-duc	1
+Th? thao	the-thao	1
+
+[4] Kiểm tra tài khoản quản trị WordPress (wp_users):
+$ docker exec de19_mysql mysql -uroot -pRootPass@2026 wordpress_db -e "SELECT ID, user_login, user_email, user_registered FROM wp_users;"
+ID	user_login	user_email	user_registered
+1	admin	dinhhop@cntt-k23c.edu.vn	2026-10-22 14:49:44
+
+[5] Kiểm tra phản hồi HTTP từ phpMyAdmin qua Nginx Proxy (/pma/):
+$ curl -sI http://localhost/pma/ | head -n 8
+HTTP/1.1 200 OK
+Server: nginx
+Date: Fri, 23 Oct 2026 08:08:54 GMT
+Content-Type: text/html; charset=utf-8
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.3.36
+Set-Cookie: phpMyAdmin=1c29b033f6c46f70205456fb6923c9b3; path=/; HttpOnly; SameSite=Strict

@@ -1,0 +1,29 @@
+================================================================================
+BÁO CÁO MÔN HỌC: QUẢN TRỊ VÀ TRIỂN KHAI HỆ THỐNG PHẦN MỀM - ĐỀ 19
+MINH CHỨNG BƯỚC 4: GIÁM SÁT HỆ THỐNG THỜI GIAN THỰC VỚI PROMETHEUS & GRAFANA
+Sinh viên: Đinh Bách Hợp - MSSV: DTC245201006 - Lớp: CNTT K23C
+Thời gian ghi nhận: Fri Oct 23 04:08:54 PM CST 2026
+================================================================================
+
+[1] Trạng thái các Scrape Targets trên Prometheus (100% UP):
+$ docker exec de19_prometheus wget -qO- http://localhost:9090/api/v1/targets
+{"status":"success","data":{"activeTargets":[{"discoveredLabels":{"__address__":"cadvisor:8080","__metrics_path__":"/metrics","__scheme__":"http","__scrape_interval__":"15s","__scrape_timeout__":"10s","job":"cadvisor"},"labels":{"instance":"cadvisor:8080","job":"cadvisor"},"scrapePool":"cadvisor","scrapeUrl":"http://cadvisor:8080/metrics","globalUrl":"http://cadvisor:8080/metrics","lastError":"","lastScrape":"2026-10-23T08:08:44.424139903Z","lastScrapeDuration":0.033278526,"health":"up","scrapeInterval":"15s","scrapeTimeout":"10s"},{"discoveredLabels":{"__address__":"loki:3100","__metrics_path__":"/metrics","__scheme__":"http","__scrape_interval__":"15s","__scrape_timeout__":"10s","job":"loki"},"labels":{"instance":"loki:3100","job":"loki"},"scrapePool":"loki","scrapeUrl":"http://loki:3100/metrics","globalUrl":"http://loki:3100/metrics","lastError":"","lastScrape":"2026-10-23T08:08:42.882985789Z","lastScrapeDuration":0.005209263,"health":"up","scrapeInterval":"15s","scrapeTimeout":"10s"},{"discoveredLabels":{"__address__":"node-exporter:9100","__metrics_path__":"/metrics","__scheme__":"http","__scrape_interval__":"15s","__scrape_timeout__":"10s","job":"node-exporter"},"labels":{"instance":"de19-server","job":"node-exporter"},"scrapePool":"node-exporter","scrapeUrl":"http://node-exporter:9100/metrics","globalUrl":"http://node-exporter:9100/metrics","lastError":"","lastScrape":"2026-10-23T08:08:45.157798842Z","lastScrapeDuration":0.012889869,"health":"up","scrapeInterval":"15s","scrapeTimeout":"10s"},{"discoveredLabels":{"__address__":"localhost:9090","__metrics_path__":"/metrics","__scheme__":"http","__scrape_interval__":"15s","__scrape_timeout__":"10s","job":"prometheus"},"labels":{"instance":"localhost:9090","job":"prometheus"},"scrapePool":"prometheus","scrapeUrl":"http://localhost:9090/metrics","globalUrl":"http://cb953c2be0e0:9090/metrics","lastError":"","lastScrape":"2026-10-23T08:08:47.332820837Z","lastScrapeDuration":0.002955506,"health":"up","scrapeInterval":"15s","scrapeTimeout":"10s"}],"droppedTargets":[],"droppedTargetCounts":{"cadvisor":0,"loki":0,"node-exporter":0,"prometheus":0}}}
+
+[2] Danh sách Data Sources đã cấu hình trên Grafana:
+$ docker exec de19_grafana wget -qO- --header="Authorization: Basic YWRtaW46QWRtaW5AR3JhZmFuYTIwMjY=" http://localhost:3000/api/datasources
+[{"id":2,"uid":"P8E80F9AEF21F6940","orgId":1,"name":"Loki","type":"loki","typeName":"Loki","typeLogoUrl":"public/app/plugins/datasource/loki/img/loki_icon.svg","access":"proxy","url":"http://loki:3100","user":"","database":"","basicAuth":false,"isDefault":false,"jsonData":{"derivedFields":[{"matcherRegex":"trace_id=(\\w+)","name":"TraceID","url":""}],"maxLines":1000},"readOnly":true},{"id":1,"uid":"PBFA97CFB590B2093","orgId":1,"name":"Prometheus","type":"prometheus","typeName":"Prometheus","typeLogoUrl":"public/app/plugins/datasource/prometheus/img/prometheus_logo.svg","access":"proxy","url":"http://prometheus:9090","user":"","database":"","basicAuth":false,"isDefault":true,"jsonData":{"timeInterval":"15s"},"readOnly":true}]
+
+[3] Danh sách Dashboards quản trị trên Grafana:
+$ docker exec de19_grafana wget -qO- --header="Authorization: Basic YWRtaW46QWRtaW5AR3JhZmFuYTIwMjY=" http://localhost:3000/api/search?type=dash-db
+[{"id":2,"uid":"de19-monitor","title":"DE19 – News Website Monitor","uri":"db/de19-e28093-news-website-monitor","url":"/d/de19-monitor/de19-e28093-news-website-monitor","slug":"","type":"dash-db","tags":["de19","news","wordpress"],"isStarred":false,"folderId":1,"folderUid":"eg203fpyt2s5cd","folderTitle":"DE19 – Tin tức","folderUrl":"/dashboards/f/eg203fpyt2s5cd/DE19 – Tin tức","sortMeta":0}]
+
+[4] Kiểm tra phản hồi HTTP từ Grafana Dashboard (Port 3000):
+$ curl -sI http://localhost:3000 | head -n 8
+HTTP/1.1 302 Found
+Server: nginx
+Date: Fri, 23 Oct 2026 08:08:54 GMT
+Content-Type: text/html; charset=utf-8
+Connection: keep-alive
+Cache-Control: no-store
+Location: /login
+X-Content-Type-Options: nosniff

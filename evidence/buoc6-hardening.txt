@@ -1,0 +1,45 @@
+================================================================================
+BÁO CÁO MÔN HỌC: QUẢN TRỊ VÀ TRIỂN KHAI HỆ THỐNG PHẦN MỀM - ĐỀ 19
+MINH CHỨNG BƯỚC 6: GIA CỐ BẢO MẬT HẠ TẦNG (HARDENING, FIREWALL, FAIL2BAN, NETWORK)
+Sinh viên: Đinh Bách Hợp - MSSV: DTC245201006 - Lớp: CNTT K23C
+Thời gian ghi nhận: Fri Oct 23 04:08:55 PM CST 2026
+================================================================================
+
+[1] Trạng thái tường lửa UFW (Chỉ mở 22, 80, 443, 3000):
+$ sudo ufw status verbose
+Status: inactive
+
+[2] Trạng thái dịch vụ chống brute-force Fail2Ban:
+$ sudo fail2ban-client status
+Fail2Ban service active
+
+[3] Cấu hình bảo mật SSH (PermitRootLogin, MaxAuthTries):
+$ grep -E 'PermitRootLogin|MaxAuthTries|LoginGraceTime' /etc/ssh/sshd_config
+#LoginGraceTime 2m
+#PermitRootLogin prohibit-password
+#MaxAuthTries 6
+# the setting of "PermitRootLogin prohibit-password".
+
+[4] Cấu hình bảo mật Kernel sysctl (SYN Cookies, IP Spoofing):
+$ sysctl net.ipv4.tcp_syncookies net.ipv4.conf.all.rp_filter net.ipv4.icmp_echo_ignore_broadcasts
+net.ipv4.tcp_syncookies = 1
+net.ipv4.conf.all.rp_filter = 2
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+
+[5] Kiểm tra các cổng đang lắng nghe (Listening Sockets):
+$ ss -tulpn | grep -E ':(80|443|3000|22)\b'
+tcp   LISTEN 0      4096         0.0.0.0:22        0.0.0.0:*          
+tcp   LISTEN 0      4096         0.0.0.0:80        0.0.0.0:*          
+tcp   LISTEN 0      4096         0.0.0.0:443       0.0.0.0:*          
+tcp   LISTEN 0      4096         0.0.0.0:3000      0.0.0.0:*          
+tcp   LISTEN 0      4096            [::]:22           [::]:*          
+tcp   LISTEN 0      4096            [::]:80           [::]:*          
+tcp   LISTEN 0      4096            [::]:443          [::]:*          
+tcp   LISTEN 0      4096            [::]:3000         [::]:*
+
+[6] Phân tách mạng nội bộ Docker (Network Isolation):
+$ docker network ls --filter "name=de19"
+NETWORK ID     NAME                      DRIVER    SCOPE
+69902922f8f0   de19_dinhhop_backend      bridge    local
+46912eb30764   de19_dinhhop_frontend     bridge    local
+5bf3cf473348   de19_dinhhop_monitoring   bridge    local

@@ -1,0 +1,55 @@
+================================================================================
+BÁO CÁO MÔN HỌC: QUẢN TRỊ VÀ TRIỂN KHAI HỆ THỐNG PHẦN MỀM - ĐỀ 19
+MINH CHỨNG BƯỚC 3: CẤU HÌNH NGINX REVERSE PROXY, SSL HTTPS VÀ SECURITY HEADERS
+Sinh viên: Đinh Bách Hợp - MSSV: DTC245201006 - Lớp: CNTT K23C
+Thời gian ghi nhận: Fri Oct 23 04:08:54 PM CST 2026
+================================================================================
+
+[1] Kiểm tra cú pháp tệp cấu hình Nginx (nginx -t):
+$ docker exec de19_nginx nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+[2] Kiểm tra chứng chỉ SSL X.509 tự ký:
+$ openssl x509 -in /home/ubuntu/dtc245201006/nginx/certs/server.crt -noout -subject -issuer -dates
+subject=C=VN, ST=ThaiNguyen, L=ThaiNguyen, O=ICTU, OU=CNTT_K23C, CN=192.168.21.129
+issuer=C=VN, ST=ThaiNguyen, L=ThaiNguyen, O=ICTU, OU=CNTT_K23C, CN=192.168.21.129
+notBefore=Oct 23 08:06:04 2026 GMT
+notAfter=Oct 23 08:06:04 2027 GMT
+
+[3] Kiểm tra phản hồi HTTP (Port 80) kèm Security Headers:
+$ curl -sI http://localhost/ | head -n 12
+HTTP/1.1 200 OK
+Server: nginx
+Date: Fri, 23 Oct 2026 08:08:54 GMT
+Content-Type: text/html; charset=UTF-8
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.21
+Link: <http://192.168.21.129/wp-json/>; rel="https://api.w.org/"
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: strict-origin-when-cross-origin
+
+[4] Kiểm tra phản hồi HTTPS (Port 443 SSL) kèm Strict-Transport-Security:
+$ curl -k -sI https://localhost/ | head -n 14
+HTTP/1.1 200 OK
+Server: nginx
+Date: Fri, 23 Oct 2026 08:08:54 GMT
+Content-Type: text/html; charset=UTF-8
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.21
+Link: <https://192.168.21.129/wp-json/>; rel="https://api.w.org/"
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: strict-origin-when-cross-origin
+Strict-Transport-Security: max-age=31536000
+
+[5] Kiểm tra chặn tệp tin nhạy cảm (HTTP 404 cho .env, HTTP 403 cho xmlrpc.php):
+$ curl -sI http://localhost/.env | head -n 1
+HTTP/1.1 404 Not Found
+$ curl -sI http://localhost/xmlrpc.php | head -n 1
+HTTP/1.1 403 Forbidden
